@@ -14,7 +14,8 @@ jobs:
           echo "NDK=$PWD/android-ndk-r25c" >> $GITHUB_ENV
       - name: Prepare jni
         run: |
-          if [ -f ffkiller_jni.zip ]; then rm -rf jni tmp_jni && mkdir -p jni && unzip -o ffkiller_jni.zip -d tmp_jni && ( [ -d tmp_jni/jni ] && cp tmp_jni/jni/* jni/ || cp tmp_jni/* jni/ ) && rm -rf tmp_jni; fi
+          ZIP=$(ls *.zip 2>/dev/null | head -1); echo "zip: $ZIP"
+          if [ -n "$ZIP" ]; then rm -rf jni tmp_jni && mkdir -p jni && unzip -o "$ZIP" -d tmp_jni && ( [ -d tmp_jni/jni ] && cp tmp_jni/jni/* jni/ || cp tmp_jni/* jni/ ) && rm -rf tmp_jni; fi
           ls jni
       - name: ndk-build
         run: $NDK/ndk-build NDK_PROJECT_PATH=.
